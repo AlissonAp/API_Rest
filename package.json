@@ -1,0 +1,24 @@
+{
+  "name": "restfull_notebookline",
+  "version": "1.0.0",
+  "description": "Api destinada para comunicação entre o aplicativo android e as informações do banco de dados",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "api",
+    "rest",
+    "full",
+    "webservice"
+  ],
+  "author": "Alisson",
+  "license": "WTFPL",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.11"
+  }
+}
