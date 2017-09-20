@@ -9,6 +9,8 @@ const pecas           = require('./models/pecas');
 const pecaController  = require('./controllers/pecaController');
 const RotaPecas       = require('./routes/pecasRouter');
 const RotaMissoes     = require('./routes/missoesRouter');
+const RotaCadastro    = require('./routes/pecasCadastrarRouter');
+
 
 console.log('Antes de chamar o roteamento');
 
@@ -21,3 +23,5 @@ app.use('/pecas/',RotaPecas);
 
 //Rotas de Missões
 app.use('/missoes/',RotaMissoes)
+
+app.use('/cadastrar',RotaCadastro)
