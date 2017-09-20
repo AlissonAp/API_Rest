@@ -17,7 +17,7 @@ app.get('/',function(req,res){
 });
 
 //Rotas de Peças
-app.use('/pecas',RotaPecas);
+app.use('/pecas/',RotaPecas);
 
 //Rotas de Missões
-app.use('/missoes',RotaMissoes)
+app.use('/missoes/',RotaMissoes)
