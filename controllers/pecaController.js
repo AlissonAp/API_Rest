@@ -59,7 +59,7 @@ exports.list = function(callback){
     if(error){
       callback({error: 'Não foi possível encontrar as peças'});
     }else{
-      callback(JSON.stringify(peca));
+      callback(peca);
     }
 
   });
