@@ -4,7 +4,7 @@ const port = '3000';
 
 const app = module.exports = express();
 
-app.listen(process.env.PORT);
+app.listen(port);
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
