@@ -20,25 +20,75 @@ let ObjectId = require('mongoose').Types.ObjectId;
 
 //     });
 
-//   }
+//   },
 
+//   save(pardescricao, parcategoria, parinformacoes, parpreco, parpropriedades, parnivel, parimagem, retorno) {
+
+//     //Salva as propriedades da peça
+//     let propriedade = new Propriedades(parpropriedades)
+
+//     let peca = new Peca({
+//       descricao: pardescricao,
+//       categoria: parcategoria,
+//       informacoes: parinformacoes,
+//       preco: parpreco,
+//       propriedades: propriedade, //Neste aqui salva o ID do JSON de propriedade
+//       nivel: parnivel,
+//       imagem: parimagem,
+//       JsonPropriedades: propriedade
+//     });
+
+//     peca.save(function (error, peca) {
+//       if (!error) {
+//         console.log('Salvou');
+//       } else {
+//         console.log('Deu pau', error)
+//       }
+
+//       retorno(error, peca);
+//     });
+
+//   },
+
+//   list(retorno) {
+
+//     Peca.find({}, function (error, peca) {
+
+//       retorno(error, peca);
+
+//     });
+
+//   },
+
+//   listCategoria(categoria, retorno) {
+
+//     Peca.find({ categoria }, function (error, peca) {
+
+//       retorno(error, peca);
+
+//     });
+
+//   },
+
+//   delete(id, retorno) {
+
+//     Peca.findById(id, function (error, peca) {
+//       if (error) {
+//         retorno(error, peca);
+//       } else {
+//         peca.remove(function (error) {
+//           if (!error) {
+//             retorno(error, peca);
+//           }
+//         })
+//       }
+
+//     });
+
+//   }
 
 // }
 
-
-exports.testepropriedade = function (propriedades, callback) {
-
-  console.log(propriedades);
-
-  let propriedade = new Propriedades(JSON.parse(propriedades)).save(function (error, propriedade) {
-    if (error) {
-      callback({ error: 'Não foi possível salvar a propriedade' + error });
-    } else {
-      console.log(propriedade);
-      callback(propriedade);
-    }
-  });
-}
 
 exports.save = function (pardescricao, parcategoria, parinformacoes, parpreco, parpropriedades, parnivel, parimagem, callback) {
 
@@ -49,7 +99,7 @@ exports.save = function (pardescricao, parcategoria, parinformacoes, parpreco, p
 
   let peca = new Peca({
     descricao: pardescricao,
-    categoria: parcategoria,
+    categoria: parcategoria, 
     informacoes: parinformacoes,
     preco: parpreco,
     propriedades: propriedade, //Neste aqui salva o ID do JSON de propriedade
