@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+let db = require('../config/db_config');
 let Schema = mongoose.Schema;
 
 //Variáveis
@@ -55,4 +56,4 @@ let RegrasSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Regras', RegrasSchema);
+module.exports = db.model('Regras', RegrasSchema);

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+let db = require('../config/db_config');
 let Schema = mongoose.Schema;
 
 const nome             = require('../fields/TipoString');
@@ -23,4 +24,4 @@ let UsuariosSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Usuarios', UsuariosSchema);
+module.exports = db.model('Usuarios', UsuariosSchema);

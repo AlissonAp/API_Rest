@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+let db = require('../config/db_config');
 let Schema = mongoose.Schema;
 
 const nome          = require('../fields/TipoString');
@@ -14,4 +15,4 @@ let MissoesSchema = new Schema({
   JsonRegras
 });
 
-module.exports = mongoose.model('Missoes', MissoesSchema);
+module.exports = db.model('Missoes', MissoesSchema);

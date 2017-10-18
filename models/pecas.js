@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+let db = require('../config/db_config');
 let Schema = mongoose.Schema;
 
 const descricao        = require('../fields/TipoString');
@@ -22,4 +23,4 @@ let PecasSchema = new Schema({
   JsonPropriedades
 });
 
-module.exports = mongoose.model('Pecas', PecasSchema);
+module.exports = db.model('Pecas', PecasSchema);

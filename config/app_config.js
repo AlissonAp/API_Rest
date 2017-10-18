@@ -15,3 +15,4 @@ app.use(function(req,res,next){
   res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type,Authorization'); // Permite que seja feita uma autorização via token
   next();
 })
+

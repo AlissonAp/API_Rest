@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+let db = require('../config/db_config');
 let Schema = mongoose.Schema;
 
 //Variáveis
@@ -55,4 +56,4 @@ let PropriedadeSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Propriedades', PropriedadeSchema);
+module.exports = db.model('Propriedades', PropriedadeSchema);
