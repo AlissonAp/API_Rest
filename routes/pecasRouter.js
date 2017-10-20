@@ -17,7 +17,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/cadastrar', function (req, res) {
-
+  
   let propriedade = new Propriedades(req.body.propriedades);
 
   let peca = new Peca({
