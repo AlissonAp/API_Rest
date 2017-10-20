@@ -4,7 +4,7 @@ const urlString = 'mongodb://localhost:27017/dbAppGame';
 
 var db = mongoose.createConnection(urlString);
 
-db.on('open', () => {
+db.on('open', () => {  
   console.log('Conexão com o banco de dados realizada com sucesso!');
 });
 

@@ -2,52 +2,76 @@ const mongoose = require('mongoose');
 let Missao = require('../models/missoes');
 let Regras = require('../models/regrasMissao');
 
-exports.save = function(parnome,parobjetivo,parregras,callback){
 
-  console.log(parregras);
+module.exports = {
 
-  //Salva as propriedades da peça
-  let regras = new Regras(parregras)
+  save(missao, retorno) {
 
-  let missao  = new Missao({
-      nome : parnome,
-      objetivo : parobjetivo,
-      regras : regras,
-      JsonRegras : regras //Salva em JSON normal
-  });
+    missao.save(function (error, missao) {
+      if (error) {
+        retorno({ 'erro': 'Não foi possível salvar a missão!' });
+      } else {
+        retorno({ 'resposta': 'Missão salva com sucesso!' });
+      }
+    });
 
-  missao.save(function(error, missao){
-      if(!error){
-        callback(missao);
-      }else{
-      callback({error: 'Não foi possível cadastrar a missão'});
-    }
-  });
+  },
+
+  list(retorno) {
+
+    Missao.find({}, function (error, missao) {
+
+      if (error) {
+
+        retorno({ 'error': 'Não foi possível encontrar as missões' });
+
+      } else {
+
+        retorno(missao);
+
+      }
+
+    });
+
+  },
+
+  findById(id, retorno) {
+
+    Missao.findById(id, function (erro, resultado) {
+      retorno(erro, resultado);
+    })
+
+  },
+
+  delete(id, retorno) {
+
+    this.findById(id, function (erro, missao) {
+
+      if (erro || missao == null) {
+
+        retorno({ 'erro': 'Missão não encontrada para exclusão!' });
+
+      } else {
+
+        missao.remove(function (erroDel) {
+
+          if (erroDel) {
+
+            retorno({ 'erro': 'Não foi possível excluir esta missão!' });
+
+          } else {
+
+            retorno({ 'resposta': "Missão excluída com sucesso!" });
+
+          }
+
+        });
+
+      }
+
+    });
+
+  }
+
 }
 
-exports.list = function(callback){
-
-  Missao.find({}, function(error, missao){
-    if(error){
-      callback({error: 'Não foi possível encontrar as missões'});
-    }else{
-      callback(JSON.stringify(missao));
-    }
-
-  });
-}
-
-exports.delete = function(id,callback){
-  Missao.findById(id, function(error,missao){
-    if(error){
-      callback({error:'Não foi possível excluir a missão'});
-    }else{
-      missao.remove(function(error){
-        if(!error){
-          callback({resposta:"Missão excluída com sucesso!"});
-        }
-      })
-    }
-
-  });
-}
