@@ -1,77 +1,50 @@
 const mongoose = require('mongoose');
 let Missao = require('../models/missoes');
 let Regras = require('../models/regrasMissao');
+let retorno = require('../utils/retorno');
 
+exports.save = (parnome, parobjetivo, parregras) => {
 
-module.exports = {
+  return new Promise((resolve, reject) => {
 
-  save(missao, retorno) {
+    //Salva as propriedades da peça
+    let regras = new Regras(parregras)
 
-    missao.save(function (error, missao) {
-      if (error) {
-        retorno({ 'erro': 'Não foi possível salvar a missão!' });
-      } else {
-        retorno({ 'resposta': 'Missão salva com sucesso!' });
-      }
+    let missao = new Missao({
+      nome: parnome,
+      objetivo: parobjetivo,
+      regras: regras,
+      JsonRegras: regras //Salva em JSON normal
     });
 
-  },
-
-  list(retorno) {
-
-    Missao.find({}, function (error, missao) {
-
-      if (error) {
-
-        retorno({ 'error': 'Não foi possível encontrar as missões' });
-
-      } else {
-
-        retorno(missao);
-
-      }
-
+    missao.save().then((missao) => {
+      resolve(retorno(200, true, "A missão foi salva com sucesso"))
+    }).catch((error) => {
+      reject(retorno(500, false, "Houve um erro ao salva a missão, detalhes: " + error))
     });
-
-  },
-
-  findById(id, retorno) {
-
-    Missao.findById(id, function (erro, resultado) {
-      retorno(erro, resultado);
-    })
-
-  },
-
-  delete(id, retorno) {
-
-    this.findById(id, function (erro, missao) {
-
-      if (erro || missao == null) {
-
-        retorno({ 'erro': 'Missão não encontrada para exclusão!' });
-
-      } else {
-
-        missao.remove(function (erroDel) {
-
-          if (erroDel) {
-
-            retorno({ 'erro': 'Não foi possível excluir esta missão!' });
-
-          } else {
-
-            retorno({ 'resposta': "Missão excluída com sucesso!" });
-
-          }
-
-        });
-
-      }
-
-    });
-
-  }
+  });
 
 }
 
+exports.list = () => {
+  //Retorna uma Promise
+  return Missao.find({});
+}
+
+exports.delete = (id) => {
+
+  return new Promise((revolve, reject) => {
+    //Verifica se a missão existe
+    Missao.findById(id).then((missao) => {
+      //Se existir remove a missão
+      missao.remove().then((missao) => {
+        resolve(retorno(200, true, "Missão excluída com sucesso!"))
+      }).catch((error) => {
+        reject(retorno(500, false, "Não foi possível excluir a missão, detalhes: " + error))
+      });
+
+    }).catch((error) => {
+      reject(retorno(404, true, "A missão " + id + " não foi encontrada na base de dados"))
+    });
+  });
+}

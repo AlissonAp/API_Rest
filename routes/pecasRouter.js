@@ -4,14 +4,15 @@ console.log('Chegou aqui antes');
 const pecasController = require('../controllers/pecaController');
 let Peca = require('../models/pecas');
 let Propriedades = require('../models/propriedadesPeca');
+let retorno = require('../utils/retorno');
 
-console.log('Chegou aqui');
 
 router.get('/', function (req, res) {
 
-  pecasController.list(function (retorno) {
-    console.log(retorno);
-    res.json(retorno);
+  pecasController.list().then((pecas) => {
+    res.json(pecas);
+  }).catch((error) => {
+    res.status(500).json(retorno(500, false, "Houve uma falha no processo de listagem de peças!"));
   });
 
 });
@@ -31,10 +32,10 @@ router.post('/cadastrar', function (req, res) {
     JsonPropriedades: propriedade
   });
 
-  console.log(peca);
-
-  pecasController.save(peca, function (resp) {
-    res.json(resp);
+  pecasController.save(peca).then((peca) => {
+    res.json(peca);
+  }).catch((error) => {
+    res.status(500).json(retorno(500, false, "Houve uma falha no processo de cadastro da peça."));
   });
 
 });
@@ -42,8 +43,10 @@ router.post('/cadastrar', function (req, res) {
 router.delete('/deletar/:id', function (req, res) {
   var id = req.params.id;
 
-  pecasController.delete(id, function (mensagem) {
-    res.json(mensagem);
+  pecasController.delete(id).then((peca) => {
+    res.json(peca);
+  }).catch((error) => {
+    res.status(500).json(retorno(500,false,"Houve uma falha ao realizar a exclusão da peça, detalhes: "+error))
   });
 
 });

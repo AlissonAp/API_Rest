@@ -1,30 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const missoesController = require('../controllers/missaoController');
-let Missao = require('../models/missoes');
-let Regras = require('../models/regrasMissao');
 
+let retorno = require('../utils/retorno');
 
 router.get('/', function (req, res) {
-  missoesController.list(function (retorno) {
-    res.json(retorno);
+
+  missoesController.list().then((retorno) => {
+    if (retorno != null) {
+      res.status(200).json(retorno);
+    } else {
+      res.status(404).json(retorno(404, true, "Ainda não existe nenhuma missão na base de dados"));
+    }
+  }).catch((error) => {
+    res.status(500).json(retorno(500, false, "Erro na busca de informações"));
   });
+
 });
 
 router.post('/cadastrar', function (req, res) {
- 
-  //Salva as propriedades da peça
-  let regras = new Regras(req.body.regras)
+  let nome = req.body.nome;
+  let objetivo = req.body.objetivo;
+  let regras = req.body.regras;
 
-  let missao = new Missao({
-    nome: req.body.nome,
-    objetivo: req.body.objetivo,
-    regras: regras,
-    JsonRegras: regras //Salva em JSON normal
-  });
-
-  missoesController.save(missao, function(retorno){
+  missoesController.save(nome, objetivo, regras).then((retorno) => {
     res.json(retorno);
+  }).catch((error) => {
+    res.status(500).json(error);
   });
 
 
@@ -33,8 +35,10 @@ router.post('/cadastrar', function (req, res) {
 router.delete('/deletar/:id', function (req, res) {
   var id = req.params.id;
 
-  missoesController.delete(id, function (retorno) {
+  missoesController.delete(id).then((retorno) => {
     res.json(retorno);
+  }).catch((error) => {
+    res.status(500).json(retorno(500, false, "Falha no processo de exclusão da missão"));
   });
 })
 

@@ -1,28 +1,42 @@
 const mongoose = require('mongoose');
 let Usuario = require('../models/usuarios');
 
-exports.novoUsuario = function(data,callback){
+// Outra forma de realizar isso
+module.exports = {
 
-  let usuario = new Usuario(JSON.parse(data));
+newUser(req,callback){
 
-  Usuario.find({email:usuario.email},function(error, usuario){
-    if(usuario.length){
+  let usuario = new Usuario({
+    
+        nome          : req.body.nome,
+        email         : req.body.email, 
+        senha         : req.body.senha, 
+        nivel         : req.body.nivel,
+        pontuacao     : req.body.pontuacao,
+        dinheiro      : req.body.dinheiro,
+        ultimaMissao  : req.body.ultimaMissao,
+        ultimoAcesso  : req.body.ultimoAcesso
+    
+    });
+
+  Usuario.find({email:usuario.email},function(error, user){
+    if(user.length){
       callback({error: 'Este e-mail já está cadastrado'});
     }else{
-      new Usuario(JSON.parse(data)).save(function(error, data){
+      new Usuario(usuario).save(function(error, usuario){
         if(error){
           callback({error: 'Não foi possível salvar o usuário'+error});
         }else{
-          console.log(data);
-          callback(data);
+          console.log(usuario);
+          callback(usuario);
         }
       });
     }
   });
 
-}
+},
 
-exports.list = function(callback){
+listUser(callback){
 
   Usuario.find({}, function(error, usuario){
     if(error){
@@ -32,9 +46,9 @@ exports.list = function(callback){
     }
 
   });
-}
+},
 
-exports.find = function(id,callback){
+findUser(id,callback){
   Usuario.findById(id, function(error, usuario){
     if(error){
       callback({error: 'Não foi possível encontrar o usuário'});
@@ -43,9 +57,9 @@ exports.find = function(id,callback){
     }
 
   });
-}
+},
 
-exports.delete = function(id,callback){
+deleteUser(id,callback){
   Usuario.findById(id, function(error,usuario){
     if(error){
       callback({error:'Não foi possível excluir o usuário'});
@@ -58,4 +72,24 @@ exports.delete = function(id,callback){
     }
 
   });
+},
+
+validateUser(usuario, callback){
+
+  let parmemail      = usuario.params.email;
+  let parmsenha      = usuario.params.senha;
+
+    Usuario.find({email:parmemail,senha:parmsenha},function(error, user){
+      if(error) return callback({error: 'Não foi possível validar o usuário solicitado!'});
+
+        if(user.length > 0){
+          callback(true);
+        }else{
+          callback(false);
+        }
+
+    })
+
+}
+
 }

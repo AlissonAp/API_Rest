@@ -2,173 +2,69 @@ const mongoose = require('mongoose');
 let Peca = require('../models/pecas');
 let Propriedades = require('../models/propriedadesPeca');
 let ObjectId = require('mongoose').Types.ObjectId;
+let retorno = require('../utils/retorno');
 
-// Outra forma de realizar isso
 module.exports = {
 
-  salvaPropriedade(propriedade, resultado) {
+  salvaPropriedade(propriedade) {
 
-    Propriedades.save(JSON.parse(propriedade), function (erro, retorno) {
+    return new Promise((resolve, reject) => {
 
-      if (erro) {
-        console.log("Erro: " + erro);
-      } else {
-        console.log("Erro: " + erro);
-      }
+      Propriedades.save(JSON.parse(propriedade)).then((propriedade) => {
+        resolve(retorno(200, true, "Propriedades da peça salvas com sucesso!"));
+      }).catch((error) => {
+        reject(retorno(500, false, "Houve uma falha ao tentar salvar a propriedade, detalhes: " + error));
+      });
 
-      resultado(erro, retorno);
+    });
+  },
 
+  save(peca) {
+
+    return new Promise((resolve, reject) => {
+
+      peca.save().then((peca) => {
+        resolve(retorno(200, true, "Peça salva com sucesso!"));
+      }).catch((error) => {
+        reject(retorno(500, false, "Houve uma falha ao tentar salvar a peça, detalhes: " + error));
+      });
     });
 
   },
 
-  save(peca, retorno) {
-
-    peca.save(function (error) {
-      if (error) {
-        retorno({ 'erro': 'Não foi possível salvar a peça!' })
-      } else {
-        retorno({ 'resposta': 'Peça salva com sucesso!' })
-      }
-
-    });
-
+  list() {
+    //Retorna a promise do próprio mongoDB
+    return Peca.find({});
   },
 
-  list(retorno) {
-
-    Peca.find({}, function (error, peca) {
-
-      if (error){
-        retorno({ 'erro': 'Não foi possível encontrar as peças' });
-      }else {
-
-        retorno(peca);
-
-      }
-
-    });
-
-  },
-
-  findById(id, retorno) {
-
-    Peca.findById(id, function (erro, resultado) {
-      retorno(erro, resultado);
-    })
-
+  findById(id) {
+    //Retorna a promise do próprio mongoDB
+    return Peca.findById(id);
   },
 
   listCategoria(categoria, retorno) {
-
-    Peca.find({ categoria }, function (error, peca) {
-
-      retorno(error, peca);
-
+    //Retorna a promise do próprio mongoDB
+    return Peca.find({
+      categoria
     });
-
   },
 
-  delete(id, retorno) {
+  delete(id) {
 
-    this.findById(id, function (erro, peca) {
+    return new Promise((resolve, reject) => {
 
-      if (erro || peca == null) {
+      Peca.findById(id).then((peca) => {
 
-        retorno({ 'erro': 'Peça não encontrada para exclusão!' });
-
-      } else {
-
-        peca.remove(function (erroDel) {
-
-          if (erroDel) {
-
-            retorno({ 'erro': 'Não foi possível excluir esta peça!' });
-
-          } else {
-
-            retorno({ 'resposta': "Peça excluída com sucesso!" });
-
-          }
-
+        peca.remove().then((peca) => {
+          resolve(retorno(200, true, "A peça id " + id + " foi excluída com sucesso!"));
+        }).catch((error) => {
+          reject(retorno(500, false, "Houve uma falha ao excluir a peça, detalhes: " + error));
         });
 
-      }
+      }).catch((error) => {
+        reject(retorno(404, false, "A peça não foi encontrada, detalhes"));
+      });
 
     });
-
   }
 }
-// exports.save = function (pardescricao, parcategoria, parinformacoes, parpreco, parpropriedades, parnivel, parimagem, callback) {
-
-//   //Salva as propriedades da peça
-//   let propriedade = new Propriedades(parpropriedades)
-
-
-
-//   let peca = new Peca({
-//     descricao: pardescricao,
-//     categoria: parcategoria, 
-//     informacoes: parinformacoes,
-//     preco: parpreco,
-//     propriedades: propriedade, //Neste aqui salva o ID do JSON de propriedade
-//     nivel: parnivel,
-//     imagem: parimagem,
-//     JsonPropriedades: propriedade
-//   });
-
-//   /*
-//     Peca.findOne(peca)
-//         .populate('propriedades')
-//         .exec(function(error, propriedade) {
-//             console.log(JSON.stringify(propriedade, null, "\t"))
-//         })
-//     */
-//   peca.save(function (error, peca) {
-//     if (!error) {
-//       callback(peca);
-//       console.log('SAlvou');
-//     } else {
-//       callback({ error: 'Não foi possível cadastrar a peça' });
-//       console.log('Deu pau', error)
-//     }
-//   });
-// }
-
-// exports.list = function (callback) {
-
-//   Peca.find({}, function (error, peca) {
-//     if (error) {
-//       callback({ error: 'Não foi possível encontrar as peças' });
-//     } else {
-//       callback(peca);
-//     }
-
-//   });
-// }
-
-// exports.listCategoria = function (categoria, callback) {
-//   Peca.find({ categoria }, function (error, peca) {
-//     if (error) {
-//       callback({ error: 'Não foi possível encontrar as peças' });
-//     } else {
-//       callback(peca);
-//     }
-
-//   });
-// }
-
-// exports.delete = function (id, callback) {
-//   Peca.findById(id, function (error, peca) {
-//     if (error) {
-//       callback({ error: 'Não foi possível excluir' });
-//     } else {
-//       peca.remove(function (error) {
-//         if (!error) {
-//           callback({ resposta: "Peça excluída com sucesso!" });
-//         }
-//       })
-//     }
-
-//   });
-// }
