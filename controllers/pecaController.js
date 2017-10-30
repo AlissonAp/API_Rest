@@ -42,7 +42,7 @@ module.exports = {
     return Peca.findById(id);
   },
 
-  listCategoria(categoria, retorno) {
+  listCategoria(categoria) {
     //Retorna a promise do próprio mongoDB
     return Peca.find({
       categoria
