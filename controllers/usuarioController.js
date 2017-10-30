@@ -1,95 +1,101 @@
 const mongoose = require('mongoose');
 let Usuario = require('../models/usuarios');
+let retorno = require('../utils/retorno');
 
 // Outra forma de realizar isso
 module.exports = {
 
-newUser(req,callback){
+  updateCreateUser(req) {
 
-  let usuario = new Usuario({
-    
-        nome          : req.body.nome,
-        email         : req.body.email, 
-        senha         : req.body.senha, 
-        nivel         : req.body.nivel,
-        pontuacao     : req.body.pontuacao,
-        dinheiro      : req.body.dinheiro,
-        ultimaMissao  : req.body.ultimaMissao,
-        ultimoAcesso  : req.body.ultimoAcesso
-    
+    let usuario = new Usuario({
+
+      nome: req.body.nome,
+      email: req.body.email,
+      senha: req.body.senha,
+      nivel: req.body.nivel,
+      pontuacao: req.body.pontuacao,
+      dinheiro: req.body.dinheiro,
+      ultimaMissao: req.body.ultimaMissao,
+      ultimoAcesso: req.body.ultimoAcesso
+
     });
 
-  Usuario.find({email:usuario.email},function(error, user){
-    if(user.length){
-      callback({error: 'Este e-mail já está cadastrado'});
-    }else{
-      new Usuario(usuario).save(function(error, usuario){
-        if(error){
-          callback({error: 'Não foi possível salvar o usuário'+error});
-        }else{
-          console.log(usuario);
-          callback(usuario);
+    return new Promise((resolve, reject) => {
+      Usuario.find({
+        email: usuario.email
+      }).then((usuario) => {
+
+        let msg = ""
+
+        if (usuario.length) {
+          msg = "Usuario atualizado com sucesso!"
+        } else {
+          msg = "Usuário criado com sucesso!"
         }
+
+        new Usuario(usuario).save().then((usuario) => {
+          resolve(retorno(200, true, msg));
+        }).catch((error) => {
+          reject(500, false, "Houve uma falha ao criar o novo usuário!");
+        });
+      }).catch((error) => {
+        reject(retorno(500, false, "Houve uma falha ao buscar o usuário"));
       });
-    }
-  });
+    });
 
-},
+  },
 
-listUser(callback){
+  listUser() {
+    return Usuario.find({});
+  },
 
-  Usuario.find({}, function(error, usuario){
-    if(error){
-      callback({error: 'Não foi possível encontrar os usuários'});
-    }else{
-      callback(usuario);
-    }
+  findUser(id) {
+    return Usuario.findById(id);
+  },
 
-  });
-},
+  deleteUser(id) {
 
-findUser(id,callback){
-  Usuario.findById(id, function(error, usuario){
-    if(error){
-      callback({error: 'Não foi possível encontrar o usuário'});
-    }else{
-      callback(usuario);
-    }
+    return new Promise((resolve, reject) => {
 
-  });
-},
+      Usuario.findById(id).then((usuario) => {
 
-deleteUser(id,callback){
-  Usuario.findById(id, function(error,usuario){
-    if(error){
-      callback({error:'Não foi possível excluir o usuário'});
-    }else{
-      usuario.remove(function(error){
-        if(!error){
-          callback({resposta:"Usuário excluído com sucesso!"});
+        if (usuario) {
+          usuario.remove().then((usuario) => {
+            resolve(retorno(200, true, "Usuário removido com sucesso!"));
+          }).catch((error) => {
+            reject(retorno(500, false, "Falha ao remover o usuário!"));
+          });
+        } else {
+          resolve(retorno(404, true, "Usuário não encontrado!"));
         }
-      })
-    }
+      }).catch((error) => {
+        reject(retorno(500, true, "Falha ao buscar o usuário antes de remover!"));
+      });
+    });
+  },
 
-  });
-},
+  validateUser(usuario, callback) {
 
-validateUser(usuario, callback){
+    let parmemail = usuario.params.email;
+    let parmsenha = usuario.params.senha;
 
-  let parmemail      = usuario.params.email;
-  let parmsenha      = usuario.params.senha;
+    return new Promise((resolve, reject) => {
 
-    Usuario.find({email:parmemail,senha:parmsenha},function(error, user){
-      if(error) return callback({error: 'Não foi possível validar o usuário solicitado!'});
-
-        if(user.length > 0){
-          callback(true);
-        }else{
-          callback(false);
+      Usuario.find({
+        email: parmemail,
+        senha: parmsenha
+      }).then((usuario) => {
+        if (usuario.length > 0) {
+          resolve(retorno(200, true, "Usuário validado com sucesso!"));
+        } else {
+          resolve(retorno(404, true, "Usuário não encontrado ou senha incorreta!"));
         }
+      }).catch((error) => {
+        reject(retorno(500, false, "Falha ao validar o usuário solicitado!"));
+      });
 
-    })
+    });
 
-}
+  }
 
 }

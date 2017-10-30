@@ -17,6 +17,21 @@ router.get('/', function (req, res) {
 
 });
 
+router.get('/:id', function(req, res){
+
+  let id = req.params.id;
+
+  pecasController.findById(id).then((peca) => {
+    if(peca != null){
+      res.status(200).json(peca);
+    }else{
+      res.status(404).json(retorno(404,true,"A peca com id "+id+ " não foi encontrada na base de dados!"));
+    }
+  }).catch((error) => {
+    res.status(500).json(retorno(500,false,"Ocorreu um erro interno ao buscar a peça solicitada!"));
+  });
+});
+
 router.post('/cadastrar', function (req, res) {
 
   let propriedade = new Propriedades(req.body.propriedades);
@@ -41,7 +56,7 @@ router.post('/cadastrar', function (req, res) {
 });
 
 router.delete('/deletar/:id', function (req, res) {
-  var id = req.params.id;
+  let id = req.params.id;
 
   pecasController.delete(id).then((peca) => {
     res.json(peca);
