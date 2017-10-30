@@ -36,7 +36,7 @@ let RegrasSchema = new Schema({
     regraMhzMemoriaRam,              // Medida em Mhz
     regraGhzProcessador,             // Medida em Ghz
     regraGhzPlacaVideo,              // Medida em Ghz
-	  regraRpmLeituraEscrita,	         // Medida em RPM
+	regraRpmLeituraEscrita,	         // Medida em RPM
     regraNucleosProcessador,
     regraModeloProcessador,          // Pentiun, i3, i5, i7, amdfx
     regraBitsPlacaVideo,             // Medida em Bits , ex: 128 bits, 254 bits
@@ -51,10 +51,10 @@ let RegrasSchema = new Schema({
     regraPossuiWebCam,               //S ou N
     regraPossuiLeitorCd_Dvd,         //S ou N
     regraResistenciaCarcaca,			    // Fraca, Média, Forte
-	  regraPesoCarcaca,					      // Medida em gramas
+	regraPesoCarcaca,					      // Medida em gramas
     regraPossuiEntradaHDMI,          // S ou N
     regraSistemaOperacional,         // Windows, Linux
 
 });
 
-module.exports = db.model('Regras', RegrasSchema);
+module.exports = RegrasSchema; //db.model('Regras', RegrasSchema);

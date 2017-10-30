@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 let db = require('../config/db_config');
 mongoose.Promise = global.Promise; // Resolve deprecateWarning Mongoose : mpromise is deprecated
 let Schema = mongoose.Schema;
-let propriedades = require('../models/propriedadesPeca');
-
+let propriedadesPeca = require('../models/propriedadesPeca');
 
 const descricao        = require('../fields/TipoString');
 const categoria        = require('../fields/TipoNumber');
@@ -12,7 +11,6 @@ const preco            = require('../fields/TipoNumber');
 const nivel            = require('../fields/TipoNumber');
 const imagem           = require('../fields/TipoString');
 const dataCadastro     = require('../fields/DataAtual');
-const JsonPropriedades = require('../fields/TipoString');
 
 let PecasSchema = new Schema({
 
@@ -20,11 +18,10 @@ let PecasSchema = new Schema({
   categoria,
   informacoes,
   preco,
-  propriedades: { type: Schema.Types.ObjectId, ref: 'Propriedades' },
+  propriedades: propriedadesPeca,
   nivel,
   imagem,      //Imagem será gravada em base64
-  dataCadastro, //Seta a data atual por padrão
-  JsonPropriedades
+  dataCadastro, //Seta a data atual por padrão  
 });
 
 module.exports = db.model('Pecas', PecasSchema);

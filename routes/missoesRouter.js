@@ -19,11 +19,8 @@ router.get('/', function (req, res) {
 });
 
 router.post('/cadastrar', function (req, res) {
-  let nome = req.body.nome;
-  let objetivo = req.body.objetivo;
-  let regras = req.body.regras;
-
-  missoesController.save(nome, objetivo, regras).then((retorno) => {
+  
+  missoesController.save(req).then((retorno) => {
     res.json(retorno);
   }).catch((error) => {
     res.status(500).json(error);
