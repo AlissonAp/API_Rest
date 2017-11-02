@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./app",
-    "build": "grunt dist",
     "postinstall": "npm run build"
   },
   "keywords": [
