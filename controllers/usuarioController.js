@@ -49,7 +49,6 @@ module.exports = {
         } else {
           
           msg = "Usuário criado com sucesso!"
-
           new Usuario(usuario).save().then((usuario) => {
             resolve(retorno(200, true, msg));
           }).catch((error) => {
@@ -58,7 +57,7 @@ module.exports = {
 
         }
 
-        }
+
       }).catch((error) => {
         reject(retorno(500, false, error));
       });
