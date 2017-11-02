@@ -56,4 +56,16 @@ router.delete('/deletar/:id', function (req, res) {
 
 });
 
+router.put('/atualizar', function (req, res) {
+  
+    pecasController.update(req).then((peca) => {
+      res.json(peca);
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).json(retorno(500, false, "Houve uma falha no processo de atualização da peça."));
+    });
+  
+  });
+
+
 module.exports = router;

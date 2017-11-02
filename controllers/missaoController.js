@@ -13,6 +13,7 @@ module.exports = {
       let missao = new Missao({
         nome: req.body.nome,
         objetivo: req.body.objetivo,
+        XP: req.body.XP,
         regras: {
           regraGbMemoriaRam: req.body.regras.regraGbMemoriaRam,				
           regraGbPlacaVideo: req.body.regras.regraGbPlacaVideo,              
