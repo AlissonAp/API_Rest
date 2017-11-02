@@ -29,15 +29,30 @@ module.exports = {
 
         if (usuario.length) {
           msg = "Usuario atualizado com sucesso!"
+
+          usuario.findByIdAndUpdate({ _id: usuario._id }, usuario).then((usuario) => {
+
+            resolve(retorno(200, true, msg));
+
+          }).catch((error) => {
+
+            reject(500, false, "Houve uma falha ao atualizar o novo usuário!");
+
+          });
+
         } else {
+          
           msg = "Usuário criado com sucesso!"
+
+          new Usuario(usuario).save().then((usuario) => {
+            resolve(retorno(200, true, msg));
+          }).catch((error) => {
+            reject(500, false, "Houve uma falha ao criar o novo usuário!");
+          });
+
         }
 
-        new Usuario(usuario).save().then((usuario) => {
-          resolve(retorno(200, true, msg));
-        }).catch((error) => {
-          reject(500, false, "Houve uma falha ao criar o novo usuário!");
-        });
+
       }).catch((error) => {
         reject(retorno(500, false, "Houve uma falha ao buscar o usuário"));
       });

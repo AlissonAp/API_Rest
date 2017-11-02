@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
 
 const nome             = require('../fields/TipoString');
 const email            = require('../fields/TipoString');
-const senha            = require('../fields/TipoNumber');
+const senha            = require('../fields/TipoString');
 const nivel            = require('../fields/TipoNumber');
 const pontuacao        = require('../fields/TipoNumber');
 const dinheiro         = require('../fields/TipoNumber');
