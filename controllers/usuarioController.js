@@ -33,7 +33,7 @@ module.exports = {
 
         let msg = ""
 
-        if (usuario.length) {
+        if (user.length && usuario.pontuacao > 0) { //Nessas situações entende-se que é realmente uma atualização
           msg = "Usuario atualizado com sucesso!"
 
           usuario.findByIdAndUpdate({ _id: usuario._id }, usuario).then((usuario) => {
@@ -48,15 +48,23 @@ module.exports = {
 
         } else {
           
-          msg = "Usuário criado com sucesso!"
-          new Usuario(usuario).save().then((usuario) => {
-            resolve(retorno(200, true, msg));
-          }).catch((error) => {
-            reject(500, false, "Houve uma falha ao criar o novo usuário!");
-          });
+          if(user.length && usuario.pontuacao == 0){
+
+            msg = "Este e-mail já está sendo utilizado por outro usuário"
+            resolve(retorno(400,true,msg));
+
+          }else{//Criacao de usuário
+
+            msg = "Usuário criado com sucesso!"
+            new Usuario(usuario).save().then((usuario) => {
+              resolve(retorno(200, true, msg));
+            }).catch((error) => {
+              reject(500, false, "Houve uma falha ao criar o novo usuário!");
+            });
+
+          }  
 
         }
-
 
       }).catch((error) => {
         reject(retorno(500, false, error));
