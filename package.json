@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./app",
-    "postinstall": "npm run build"
+	"start": "node ./app",
+	  "build": "grunt dist"
   },
   "keywords": [
     "node",
@@ -23,7 +23,7 @@
     "express": "^4.15.4",
     "mongoose": "^4.11.11"
   },
-  "engines": {
-    "node": "6.9.1"
+  "engines":{
+	"node":"6.9.1"
   }
 }
