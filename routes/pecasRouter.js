@@ -34,22 +34,12 @@ router.get('/:id', function(req, res){
 
 router.post('/cadastrar', function (req, res) {
 
-  let propriedade = new Propriedades(req.body.propriedades);
+  console.log(req.body);
 
-  let peca = new Peca({
-    descricao: req.body.descricao,
-    categoria: req.body.categoria,
-    informacoes: req.body.informacoes,
-    preco: req.body.preco,
-    propriedades: propriedade, //Neste aqui salva o ID do JSON de propriedade
-    nivel: req.body.nivel,
-    imagem: req.body.imagem,
-    JsonPropriedades: propriedade
-  });
-
-  pecasController.save(peca).then((peca) => {
+  pecasController.save(req).then((peca) => {
     res.json(peca);
   }).catch((error) => {
+    console.log(error);
     res.status(500).json(retorno(500, false, "Houve uma falha no processo de cadastro da peça."));
   });
 
@@ -65,5 +55,17 @@ router.delete('/deletar/:id', function (req, res) {
   });
 
 });
+
+router.put('/atualizar', function (req, res) {
+  
+    pecasController.update(req).then((peca) => {
+      res.json(peca);
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).json(retorno(500, false, "Houve uma falha no processo de atualização da peça."));
+    });
+  
+  });
+
 
 module.exports = router;

@@ -36,7 +36,7 @@ let PropriedadeSchema = new Schema({
     MhzMemoriaRam,              // Medida em Mhz
     GhzProcessador,             // Medida em Ghz
     GhzPlacaVideo,              // Medida em Ghz
-	  RpmLeituraEscrita,	        // Medida em RPM
+	RpmLeituraEscrita,	        // Medida em RPM
     NucleosProcessador,
     ModeloProcessador,          // Pentiun, i3, i5, i7, amdfx
     BitsPlacaVideo,             // Medida em Bits , ex: 128 bits, 254 bits
@@ -51,10 +51,10 @@ let PropriedadeSchema = new Schema({
     PossuiWebCam,               //S ou N
     PossuiLeitorCd_Dvd,         //S ou N
     ResistenciaCarcaca,			    // Fraca, Média, Forte
-	  PesoCarcaca,					      // Medida em gramas
+	PesoCarcaca,					      // Medida em gramas
     PossuiEntradaHDMI,          // S ou N
     SistemaOperacional,         // Windows, Linux
 
 });
 
-module.exports = db.model('Propriedades', PropriedadeSchema);
+module.exports = PropriedadeSchema; //db.model('Propriedades', PropriedadeSchema);
