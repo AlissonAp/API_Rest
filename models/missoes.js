@@ -13,7 +13,9 @@ let MissoesSchema = new Schema({
   objetivo,
   regras : { type: Schema.Types.ObjectId, ref: 'Regras'},
   dataCadastro, //Seta a data atual por padrão
-  JsonRegras
+  JsonRegras,
+  xp,
+  dinheiro
 });
 
 module.exports = db.model('Missoes', MissoesSchema);

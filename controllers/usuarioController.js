@@ -6,6 +6,10 @@ let retorno = require('../utils/retorno');
 module.exports = {
 
   updateCreateUser(req) {
+    return new Promise((resolve, reject) => {
+
+
+      console.log(req);
 
     let usuario = new Usuario({
 
@@ -20,26 +24,35 @@ module.exports = {
 
     });
 
-    return new Promise((resolve, reject) => {
+   
+     
+    console.log(usuario);
       Usuario.find({
         email: usuario.email
-      }).then((usuario) => {
+      }).then((user) => {
 
         let msg = ""
 
-        if (usuario.length) {
-          msg = "Usuario atualizado com sucesso!"
+        console.log(user);
+
+        if (user.length) {
+          usuario.id = user.id
+          Usuario.update(usuario).then((usuario) => {
+            msg = "Usuario atualizado com sucesso!"
+            resolve(retorno(202,true,"Usuário atualizado com sucesso!"));
+          }).catch((error) => {
+            reject(retorno(500,false,error));
+          });
         } else {
           msg = "Usuário criado com sucesso!"
+          new Usuario(usuario).save().then((usuario) => {
+            resolve(retorno(200, true, msg));
+          }).catch((error) => {
+            reject(500, false, "Houve uma falha ao criar o novo usuário!");
+          });
         }
-
-        new Usuario(usuario).save().then((usuario) => {
-          resolve(retorno(200, true, msg));
-        }).catch((error) => {
-          reject(500, false, "Houve uma falha ao criar o novo usuário!");
-        });
       }).catch((error) => {
-        reject(retorno(500, false, "Houve uma falha ao buscar o usuário"));
+        reject(retorno(500, false, error));
       });
     });
 

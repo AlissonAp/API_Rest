@@ -7,8 +7,10 @@ let retorno = require('../utils/retorno');
 
 
 router.get('/', function (req, res) {
-  usuarioController.listUser(function (resp) {
-    res.json(resp);
+  usuarioController.listUser().then((usuarios) => {
+    res.status(200).json(usuarios);
+  }).catch((error) =>{
+    res.status(retorno(500,false,"Erro interno ao buscar os usuários"));
   });
 });
 
@@ -26,7 +28,7 @@ router.put('/atualizar', function (req, res) {
   usuarioController.updateCreateUser(req).then((usuario) => {
     res.status(200).json(usuario);
   }).catch((error) => {
-    res.status(500).json(retorno(500, false, "Houve uma exceção ao atualizar o usuário!"));
+    res.status(500).json(retorno(500, false, error));
   });
 
 })
