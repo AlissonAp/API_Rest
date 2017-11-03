@@ -46,7 +46,7 @@ module.exports = {
 
           });
 
-        } else {
+        } else { //Cadastro para um e-mail já existente
           
           if(user.length && usuario.pontuacao == 0){
 
@@ -102,7 +102,7 @@ module.exports = {
     });
   },
 
-  validateUser(usuario, callback) {
+  validateUser(usuario) {
 
     let parmemail = usuario.params.email;
     let parmsenha = usuario.params.senha;
