@@ -8,78 +8,55 @@ module.exports = {
   updateCreateUser(req) {
     return new Promise((resolve, reject) => {
 
+      let usuario = new Usuario({
+        nome: req.body.nome,
+        email: req.body.email,
+        senha: req.body.senha,
+        nivel: req.body.nivel,
+        pontuacao: req.body.pontuacao,
+        dinheiro: req.body.dinheiro,
+        ultimaMissao: req.body.ultimaMissao,
+        ultimoAcesso: req.body.ultimoAcesso
 
-      console.log(req);
+      });
 
-    let usuario = new Usuario({
-
-      nome: req.body.nome,
-      email: req.body.email,
-      senha: req.body.senha,
-      nivel: req.body.nivel,
-      pontuacao: req.body.pontuacao,
-      dinheiro: req.body.dinheiro,
-      ultimaMissao: req.body.ultimaMissao,
-      ultimoAcesso: req.body.ultimoAcesso
-
-    });
-
-   
-     
-    console.log(usuario);
       Usuario.find({
         email: usuario.email
       }).then((user) => {
 
         let msg = ""
 
-<<<<<<< HEAD
-        if (usuario.length) {
+        usuario._id = user[0].id; //Isso aqui faz toda a diferenca pra encontrar e atualizar o id corretamente
+
+        if (user.length) {
           msg = "Usuario atualizado com sucesso!"
 
-          usuario.findByIdAndUpdate({ _id: usuario._id }, usuario).then((usuario) => {
+          console.log(user);
+
+          Usuario.update({ _id: usuario._id }, usuario).then((usuarioAux) => {
 
             resolve(retorno(200, true, msg));
 
           }).catch((error) => {
-
+            console.log(error);
             reject(500, false, "Houve uma falha ao atualizar o novo usuário!");
 
           });
 
-=======
-        console.log(user);
-
-        if (user.length) {
-          usuario.id = user.id
-          Usuario.update(usuario).then((usuario) => {
-            msg = "Usuario atualizado com sucesso!"
-            resolve(retorno(202,true,"Usuário atualizado com sucesso!"));
-          }).catch((error) => {
-            reject(retorno(500,false,error));
-          });
->>>>>>> c8a5b6055ae887ad1a4dbe4767219feed5adf2c9
         } else {
-          
-          msg = "Usuário criado com sucesso!"
-<<<<<<< HEAD
 
-=======
->>>>>>> c8a5b6055ae887ad1a4dbe4767219feed5adf2c9
+          msg = "Usuário criado com sucesso!"
           new Usuario(usuario).save().then((usuario) => {
             resolve(retorno(200, true, msg));
           }).catch((error) => {
             reject(500, false, "Houve uma falha ao criar o novo usuário!");
           });
-<<<<<<< HEAD
 
         }
 
 
-=======
-        }
->>>>>>> c8a5b6055ae887ad1a4dbe4767219feed5adf2c9
       }).catch((error) => {
+        console.log(error);
         reject(retorno(500, false, error));
       });
     });

@@ -23,12 +23,12 @@ router.post('/cadastrar', function (req, res) {
   });
 });
 
-router.put('/atualizar', function (req, res) {
+router.post('/atualizar', function (req, res) {
 
   usuarioController.updateCreateUser(req).then((usuario) => {
     res.status(200).json(usuario);
   }).catch((error) => {
-    res.status(500).json(retorno(500, false, error));
+    res.status(500).json(retorno(500, false, "Houve uma falha ao atualizar o usuário"));
   });
 
 })
