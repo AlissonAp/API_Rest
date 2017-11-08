@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-// const urlString = 'mongodb://admin:root@ds139844.mlab.com:39844/thenotebookline';
-const urlString = 'mongodb://localhost:27017/dbAppGame';
+const urlString = 'mongodb://admin:root@ds139844.mlab.com:39844/thenotebookline';
+//const urlString = 'mongodb://localhost:27017/dbAppGame';
 
 var db = mongoose.createConnection(urlString);
 

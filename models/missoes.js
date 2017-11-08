@@ -10,7 +10,7 @@ const dataCadastro  = require('../fields/DataAtual');
 const XP            = require("../fields/TipoNumber");
 
 let MissoesSchema = new Schema({
-
+  
   nome,
   objetivo,
   regras : regras,

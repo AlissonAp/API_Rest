@@ -28,7 +28,7 @@ module.exports = {
 
         usuario._id = user[0].id; //Isso aqui faz toda a diferenca pra encontrar e atualizar o id corretamente
 
-        if (user.length) {
+        if (user.length && user.pontuacao > 0) {
           msg = "Usuario atualizado com sucesso!"
 
           console.log(user);
@@ -43,17 +43,23 @@ module.exports = {
 
           });
 
-        } else {
+        } else { //Cadastro para um e-mail já existente
+          
+          if(user.length && usuario.pontuacao == 0){
 
-          msg = "Usuário criado com sucesso!"
-          new Usuario(usuario).save().then((usuario) => {
-            resolve(retorno(200, true, msg));
-          }).catch((error) => {
-            reject(500, false, "Houve uma falha ao criar o novo usuário!");
-          });
+            msg = "Este e-mail já está sendo utilizado por outro usuário"
+            resolve(retorno(400,true,msg));
 
-        }
+          }else{//Criacao de usuário
 
+            msg = "Usuário criado com sucesso!"
+            new Usuario(usuario).save().then((usuario) => {
+              resolve(retorno(200, true, msg));
+            }).catch((error) => {
+              reject(500, false, "Houve uma falha ao criar o novo usuário!");
+            });
+
+          }  
 
       }).catch((error) => {
         console.log(error);
@@ -92,7 +98,7 @@ module.exports = {
     });
   },
 
-  validateUser(usuario, callback) {
+  validateUser(usuario) {
 
     let parmemail = usuario.params.email;
     let parmsenha = usuario.params.senha;
