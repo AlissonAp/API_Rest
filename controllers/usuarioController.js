@@ -20,15 +20,15 @@ module.exports = {
 
       });
 
-      Usuario.find({
+      Usuario.findOne({
         email: usuario.email
       }).then((user) => {
 
         let msg = ""
 
-        usuario._id = user[0].id; //Isso aqui faz toda a diferenca pra encontrar e atualizar o id corretamente
+        if (user != null && usuario.pontuacao > 0) {
+          usuario._id = user.id; //Isso aqui faz toda a diferenca pra encontrar e atualizar o id corretamente
 
-        if (user.length && user.pontuacao > 0) {
           msg = "Usuario atualizado com sucesso!"
 
           console.log(user);
@@ -44,13 +44,13 @@ module.exports = {
           });
 
         } else { //Cadastro para um e-mail já existente
-          
-          if(user.length && usuario.pontuacao == 0){
+
+          if (user != null && usuario.pontuacao == 0) {
 
             msg = "Este e-mail já está sendo utilizado por outro usuário"
-            resolve(retorno(400,true,msg));
+            resolve(retorno(400, true, msg));
 
-          }else{//Criacao de usuário
+          } else {//Criacao de usuário
 
             msg = "Usuário criado com sucesso!"
             new Usuario(usuario).save().then((usuario) => {
@@ -59,7 +59,8 @@ module.exports = {
               reject(500, false, "Houve uma falha ao criar o novo usuário!");
             });
 
-          }  
+          }
+        }
 
       }).catch((error) => {
         console.log(error);
