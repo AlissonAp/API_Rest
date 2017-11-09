@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise; // Resolve deprecateWarning Mongoose : mpromi
 let Schema = mongoose.Schema;
 
 const nome             = require('../fields/TipoString');
-const email            = require('../fields/TipoString');
+const email            = require('../fields/TipoStringLowercase');
 const senha            = require('../fields/TipoString');
 const nivel            = require('../fields/TipoNumber');
 const pontuacao        = require('../fields/TipoNumber');

@@ -33,7 +33,7 @@ router.put('/atualizar', function (req, res) {
 
 })
 
-router.get('/validar/:email/:senha', function (req, res) {
+router.get('/validar', function (req, res) {
 
   usuarioController.validateUser(req).then((usuario) => {
     res.status(200).json(usuario);

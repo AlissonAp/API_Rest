@@ -113,7 +113,7 @@ module.exports = {
         if (usuario.length > 0) {
           resolve(retorno(200, true, "Usuário validado com sucesso!"));
         } else {
-          resolve(retorno(404, true, "Usuário não encontrado ou senha incorreta!"));
+          resolve(retorno(404, false, "Usuário não encontrado ou senha incorreta!"));
         }
       }).catch((error) => {
         reject(retorno(500, false, "Falha ao validar o usuário solicitado!"));
