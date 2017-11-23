@@ -111,7 +111,7 @@ module.exports = {
         senha: parmsenha
       }).then((usuario) => {
         if (usuario.length > 0) {
-          resolve(retorno(200, true, "Usuário validado com sucesso!"));
+          resolve(retorno(200, true, usuario));
         } else {
           resolve(retorno(404, false, "Usuário não encontrado ou senha incorreta!"));
         }
