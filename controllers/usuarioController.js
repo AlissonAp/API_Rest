@@ -16,8 +16,8 @@ module.exports = {
         pontuacao: req.body.pontuacao,
         dinheiro: req.body.dinheiro,
         ultimaMissao: req.body.ultimaMissao,
-        ultimoAcesso: req.body.ultimoAcesso
-
+        ultimoAcesso: req.body.ultimoAcesso,
+        imagem: req.body.imagem
       });
 
       Usuario.findOne({

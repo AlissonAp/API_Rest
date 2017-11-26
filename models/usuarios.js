@@ -11,6 +11,7 @@ const pontuacao        = require('../fields/TipoNumber');
 const dinheiro         = require('../fields/TipoNumber');
 const ultimaMissao     = require('../fields/TipoNumber');
 const ultimoAcesso     = require('../fields/Data');
+const imagem           = require('../fields/TipoString');
 
 let UsuariosSchema = new Schema({
 
@@ -21,7 +22,8 @@ let UsuariosSchema = new Schema({
   pontuacao,
   dinheiro,
   ultimaMissao,
-  ultimoAcesso
+  ultimoAcesso,
+  imagem
 
 });
 
